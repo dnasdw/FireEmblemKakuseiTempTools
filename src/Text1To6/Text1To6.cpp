@@ -218,6 +218,104 @@ int UMain(int argc, UChar* argv[])
 			}
 		}
 	}
+	for (map<n32, map<n32, map<n32, wstring>>>::iterator it = mText.begin(); it != mText.end(); ++it)
+	{
+		n32 nOuterNo = it->first;
+		map<n32, map<n32, wstring>>& mOuterStmt = it->second;
+		vector<n32> vIndex;
+		if (nOuterNo % 2 == 0)
+		{
+			wstring sMID = mOuterStmt[0][2];
+			if (!EndWith(sMID, L"_PCF1"))
+			{
+				continue;
+			}
+			wstring sMIDBase = sMID.substr(0, sMID.size() - wcslen(L"_PCF1"));
+			sMID = sMIDBase + L"_PCM1";
+			map<wstring, n32>::iterator it2 = mMIDIndex.find(sMID);
+			if (it2 != mMIDIndex.end())
+			{
+				continue;
+			}
+			vIndex.push_back(nOuterNo);
+			for (n32 i = 0; i < SDW_ARRAY_COUNT(sMIDSuffix); i++)
+			{
+				if (i == 3)
+				{
+					continue;
+				}
+				if (!sMIDSuffix[i].empty())
+				{
+					sMID = sMIDBase + sMIDSuffix[i];
+					it2 = mMIDIndex.find(sMID);
+					if (it2 != mMIDIndex.end())
+					{
+						vIndex.push_back(it2->second);
+					}
+				}
+			}
+		}
+		if (vIndex.size() > 1)
+		{
+			map<n32, map<n32, wstring>>& mOuterStmtPCF1 = mText[vIndex[0] + 1];
+			for (n32 i = 1; i < static_cast<n32>(vIndex.size()); i++)
+			{
+				wstring sMID = mText[vIndex[i]][0][2];
+				bool bNoText = sMID[sMID.size() - 1] == L'3';
+				map<n32, map<n32, wstring>>& mOuterStmtOther = mText[vIndex[i] + 1];
+				if (mOuterStmtOther.size() != mOuterStmtPCF1.size())
+				{
+					if (!bLogFileName)
+					{
+						fu16printf(fpLog, L"%ls\r\n", UToW(argv[1]).c_str());
+					}
+					fu16printf(fpLog, L"\tNo.%d, %ls No.%d, %ls stmt count not equal\r\n", vIndex[0] + 1, mText[vIndex[0]][0][2].c_str(), vIndex[i] + 1, sMID.c_str());
+					continue;
+				}
+				bool bContinue = false;
+				for (map<n32, map<n32, wstring>>::iterator itPCF1 = mOuterStmtPCF1.begin(); itPCF1 != mOuterStmtPCF1.end(); ++itPCF1)
+				{
+					n32 nNo = itPCF1->first;
+					wstring sCharNamePCF1 = itPCF1->second[1];
+					map<n32, map<n32, wstring>>::iterator itOther = mOuterStmtOther.find(nNo);
+					if (itOther == mOuterStmtOther.end())
+					{
+						if (!bLogFileName)
+						{
+							fu16printf(fpLog, L"%ls\r\n", UToW(argv[1]).c_str());
+						}
+						fu16printf(fpLog, L"\t%ls stmt not find No.%d,%d,\r\n", sMID.c_str(), vIndex[i] + 1, nNo);
+						bContinue = true;
+						break;
+					}
+					wstring sCharNameOther = itOther->second[1];
+					if (sCharNameOther != sCharNamePCF1)
+					{
+						if (!bLogFileName)
+						{
+							fu16printf(fpLog, L"%ls\r\n", UToW(argv[1]).c_str());
+						}
+						fu16printf(fpLog, L"\t%ls stmt No.%d,%d, char name not equal %ls %ls\r\n", sMID.c_str(), vIndex[i] + 1, nNo, sCharNamePCF1.c_str(), sCharNameOther.c_str());
+						bContinue = true;
+						break;
+					}
+				}
+				if (bContinue)
+				{
+					continue;
+				}
+				for (map<n32, map<n32, wstring>>::iterator itPCF1 = mOuterStmtPCF1.begin(); itPCF1 != mOuterStmtPCF1.end(); ++itPCF1)
+				{
+					n32 nNo = itPCF1->first;
+					wstring sCharNamePCF1 = itPCF1->second[1];
+					if (!(sCharNamePCF1 == L"username" && bNoText))
+					{
+						mOuterStmtOther[nNo][3] = itPCF1->second[3];
+					}
+				}
+			}
+		}
+	}
 	fclose(fpLog);
 	fp = UFopen(argv[1], USTR("wb"), false);
 	if (fp == nullptr)
