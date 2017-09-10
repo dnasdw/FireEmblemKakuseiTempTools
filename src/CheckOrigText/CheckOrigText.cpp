@@ -81,7 +81,7 @@ int UMain(int argc, UChar* argv[])
 			return 1;
 		}
 		uPosOrig0 = uPosOrig1 + wcslen(L"\r\n--------------------------------------");
-		uPos0 = sTxt.find(sNum, uPos0);
+		uPos0 = sTxt.find(L"No.", uPos0);
 		if (uPos0 == wstring::npos)
 		{
 			return 1;
