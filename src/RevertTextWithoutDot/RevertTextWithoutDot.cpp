@@ -31,8 +31,69 @@ int UMain(int argc, UChar* argv[])
 	pTemp[uTxtSize] = 0;
 	wstring sTxt = U16ToW(pTemp + 1);
 	delete[] pTemp;
-	wstring sTxtNew;
 	wstring::size_type uPos0 = 0;
+	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
+	{
+		uPos0 += wcslen(L"No.");
+		wstring::size_type uPos1 = sTxt.find(L"\r\n--------------------------------------\r\n", uPos0);
+		if (uPos1 == wstring::npos)
+		{
+			return 1;
+		}
+		UString sNum = WToU(sTxt.substr(uPos0, uPos1 - uPos0));
+		uPos0 = uPos1 + wcslen(L"\r\n--------------------------------------\r\n");
+		uPos1 = sTxt.find(L"\r\n======================================\r\n", uPos0);
+		if (uPos1 == wstring::npos)
+		{
+			return 1;
+		}
+		wstring sStmtOld = sTxt.substr(uPos0, uPos1 - uPos0);
+		uPos0 = uPos1 + wcslen(L"\r\n======================================\r\n");
+		uPos1 = sTxt.find(L"\r\n--------------------------------------", uPos0);
+		if (uPos1 == wstring::npos)
+		{
+			return 1;
+		}
+		wstring sStmtNew = sTxt.substr(uPos0, uPos1 - uPos0);
+		uPos0 = uPos1 += wcslen(L"\r\n--------------------------------------");
+		if (sStmtNew != sStmtOld)
+		{
+			wstring::size_type uPosOld0 = 0;
+			wstring::size_type uPosNew0 = 0;
+			do
+			{
+				uPosOld0 = sStmtOld.find(L'{', uPosOld0);
+				uPosNew0 = sStmtNew.find(L'{', uPosNew0);
+				if (uPosOld0 == wstring::npos && uPosNew0 == wstring::npos)
+				{
+					break;
+				}
+				if (uPosOld0 == wstring::npos || uPosNew0 == wstring::npos)
+				{
+					UPrintf(USTR("No.%") PRIUS USTR(" fatal error, miss {}\n"), sNum.c_str());
+					break;
+				}
+				wstring::size_type uPosOld1 = uPosOld0;
+				uPosOld1 = sStmtOld.find(L'}', uPosOld0);
+				if (uPosOld1 == wstring::npos)
+				{
+					UPrintf(USTR("No.%") PRIUS USTR(" error, old not find }\n"), sNum.c_str());
+					return 1;
+				}
+				wstring::size_type uPosNew1 = uPosNew0;
+				uPosNew1 = sStmtNew.find(L'}', uPosNew0);
+				if (uPosNew1 == wstring::npos)
+				{
+					UPrintf(USTR("No.%") PRIUS USTR(" error, new not find }\n"), sNum.c_str());
+					return 1;
+				}
+				uPosOld0 = uPosOld1 + 1;
+				uPosNew0 = uPosNew1 + 1;
+			} while (true);
+		}
+	}
+	wstring sTxtNew;
+	uPos0 = 0;
 	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
 	{
 		uPos0 += wcslen(L"No.");
