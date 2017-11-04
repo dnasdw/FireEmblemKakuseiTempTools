@@ -173,11 +173,6 @@ int UMain(int argc, UChar* argv[])
 						return 1;
 					}
 				}
-				else if (sStmtNew[uPosNew0] == L'¡¤')
-				{
-					sStmtNew.replace(uPosNew0, 1, sStmtOld.c_str() + uPosOld0, uPosOld1 + 1 - uPosOld0);
-					uPosNew1 += uPosOld1 + 1 - uPosOld0 - 1;
-				}
 				uPosOld0 = uPosOld1 + 1;
 				uPosNew0 = uPosNew1 + 1;
 			} while (true);
