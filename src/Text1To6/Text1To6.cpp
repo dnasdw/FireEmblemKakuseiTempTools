@@ -47,7 +47,7 @@ int UMain(int argc, UChar* argv[])
 		if (nOuterNo % 2 == 0)
 		{
 			wstring sOuterNum = Format(L"%d\r\n", nOuterNo);
-			if (!StartWith(sTxt, sOuterNum, uPos0))
+			if (!StartWith(sTxt, sOuterNum, static_cast<u32>(uPos0)))
 			{
 				return 1;
 			}
@@ -55,14 +55,14 @@ int UMain(int argc, UChar* argv[])
 		else
 		{
 			wstring sOuterNum = Format(L"%d,", nOuterNo);
-			if (!StartWith(sTxt, sOuterNum, uPos0))
+			if (!StartWith(sTxt, sOuterNum, static_cast<u32>(uPos0)))
 			{
 				return 1;
 			}
 			uPos0 += sOuterNum.size();
 			nNo = SToN32(sTxt.c_str() + uPos0);
 			wstring sNum = Format(L"%d,", nNo);
-			if (!StartWith(sTxt, sNum, uPos0))
+			if (!StartWith(sTxt, sNum, static_cast<u32>(uPos0)))
 			{
 				return 1;
 			}
