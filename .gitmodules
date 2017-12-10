@@ -4,3 +4,9 @@
 [submodule "dep/libsundaowen"]
 	path = dep/libsundaowen
 	url = https://github.com/dnasdw/libsundaowen_src.git
+[submodule "dep/zlib"]
+	path = dep/zlib
+	url = https://github.com/dnasdw/libsundaowen_zlib.git
+[submodule "dep/libpng"]
+	path = dep/libpng
+	url = https://github.com/dnasdw/libsundaowen_libpng.git
