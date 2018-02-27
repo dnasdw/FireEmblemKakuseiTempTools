@@ -74,7 +74,7 @@ int UMain(int argc, UChar* argv[])
 		{
 			wstring sWord = sStmtNew.substr(uPos, 1);
 			sStmtNew = Replace(sStmtNew, L"\r\n", L"\n");
-			UPrintf(USTR("%") PRIUS USTR(" |%") PRIUS USTR("|\n%") PRIUS USTR("\n"), sNum.c_str(), WToU(sWord).c_str(), WToU(sStmtNew).c_str());
+			UPrintf(USTR("%") PRIUS USTR(" |%") PRIUS USTR("|\n%") PRIUS USTR("\n"), WToU(sNum).c_str(), WToU(sWord).c_str(), WToU(sStmtNew).c_str());
 		}
 	}
 	return 0;

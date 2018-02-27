@@ -182,7 +182,7 @@ int UMain(int argc, UChar* argv[])
 			sTxtNew += L"\r\n\r\n";
 		}
 		sTxtNew += L"No.";
-		sTxtNew += sNum;
+		sTxtNew += UToW(sNum);
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 		sTxtNew += sStmtOld;
 		sTxtNew += L"\r\n======================================\r\n";

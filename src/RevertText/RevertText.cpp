@@ -64,7 +64,7 @@ int UMain(int argc, UChar* argv[])
 			do
 			{
 				uPosOld0 = sStmtOld.find_first_of(L"<{", uPosOld0);
-				uPosNew0 = sStmtNew.find_first_of(L"<{¡¤", uPosNew0);
+				uPosNew0 = sStmtNew.find_first_of(L"<{\u00B7", uPosNew0);
 				if (uPosOld0 == wstring::npos && uPosNew0 == wstring::npos)
 				{
 					break;
@@ -112,7 +112,7 @@ int UMain(int argc, UChar* argv[])
 						return 1;
 					}
 				}
-				else if (sStmtNew[uPosNew0] == L'¡¤')
+				else if (sStmtNew[uPosNew0] == L'\u00B7')
 				{
 					sStmtNew.replace(uPosNew0, 1, sStmtOld.c_str() + uPosOld0, uPosOld1 + 1 - uPosOld0);
 					uPosNew1 += uPosOld1 + 1 - uPosOld0 - 1;
@@ -126,7 +126,7 @@ int UMain(int argc, UChar* argv[])
 			sTxtNew += L"\r\n\r\n";
 		}
 		sTxtNew += L"No.";
-		sTxtNew += sNum;
+		sTxtNew += UToW(sNum);
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 		sTxtNew += sStmtOld;
 		sTxtNew += L"\r\n======================================\r\n";
