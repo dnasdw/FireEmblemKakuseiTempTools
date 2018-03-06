@@ -56,6 +56,36 @@ int UMain(int argc, UChar* argv[])
 		}
 		wstring sStmtNew = sTxt.substr(uPos0, uPos1 - uPos0);
 		uPos0 = uPos1 += wcslen(L"\r\n--------------------------------------");
+		wstring sTempTxt = sStmtOld;
+		sTempTxt = Replace(sTempTxt, L"[--------------------------------------]", L"");
+		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
+		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"======================================") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"No.") != wstring::npos)
+		{
+			return 1;
+		}
+		sTempTxt = sStmtNew;
+		sTempTxt = Replace(sTempTxt, L"[--------------------------------------]", L"");
+		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
+		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"======================================") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"No.") != wstring::npos)
+		{
+			return 1;
+		}
 		if (sStmtNew != sStmtOld)
 		{
 			map<wstring, u32> mControlOld;

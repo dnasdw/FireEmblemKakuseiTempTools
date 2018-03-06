@@ -82,6 +82,21 @@ int UMain(int argc, UChar* argv[])
 			return 1;
 		}
 		uPosOrig0 = uPosOrig1 + wcslen(L"\r\n--------------------------------------");
+		wstring sTempTxt = sStmtOrigOld;
+		sTempTxt = Replace(sTempTxt, L"[--------------------------------------]", L"");
+		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
+		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"======================================") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"No.") != wstring::npos)
+		{
+			return 1;
+		}
 		uPos0 = sTxt.find(L"No.", uPos0);
 		if (uPos0 == wstring::npos)
 		{
@@ -109,6 +124,21 @@ int UMain(int argc, UChar* argv[])
 		if (nNum % 2 == 0)
 		{
 			sStmtNew = sStmtOrigOld;
+		}
+		sTempTxt = sStmtNew;
+		sTempTxt = Replace(sTempTxt, L"[--------------------------------------]", L"");
+		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
+		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"======================================") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"No.") != wstring::npos)
+		{
+			return 1;
 		}
 		if (!sTxtNew.empty())
 		{
