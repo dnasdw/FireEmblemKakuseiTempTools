@@ -4,10 +4,9 @@ int UMain(int argc, UChar* argv[])
 {
 	if (argc != 2)
 	{
-		UPrintf(USTR("ERROR: argument count error\n\n"));
 		return 1;
 	}
-	FILE* fp = UFopen(argv[1], USTR("rb"));
+	FILE* fp = UFopen(argv[1], USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -16,7 +15,6 @@ int UMain(int argc, UChar* argv[])
 	u32 uTxtSize = ftell(fp);
 	if (uTxtSize % 2 != 0)
 	{
-		UPrintf(USTR("ERROR: not Unicode text\n\n"));
 		fclose(fp);
 		return 1;
 	}
@@ -27,7 +25,6 @@ int UMain(int argc, UChar* argv[])
 	fclose(fp);
 	if (pTemp[0] != 0xFEFF)
 	{
-		UPrintf(USTR("ERROR: no Unicode BOM\n\n"));
 		delete[] pTemp;
 		return 1;
 	}
@@ -41,17 +38,6 @@ int UMain(int argc, UChar* argv[])
 		wstring::size_type uPos1 = sTxt.find(L"\r\n--------------------------------------\r\n", uPos0);
 		if (uPos1 == wstring::npos)
 		{
-			wstring sNum;
-			uPos1 = sTxt.find(L"\r\n", uPos0);
-			if (uPos1 != wstring::npos)
-			{
-				sNum = sTxt.substr(uPos0, uPos1 - uPos0);
-			}
-			else
-			{
-				sNum = sTxt.substr(uPos0);
-			}
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" can not find first \\r\\n--------------------------------------\\r\\n\n\n"), sNum.c_str());
 			return 1;
 		}
 		wstring sNum = sTxt.substr(uPos0, uPos1 - uPos0);
@@ -59,7 +45,6 @@ int UMain(int argc, UChar* argv[])
 		uPos1 = sTxt.find(L"\r\n======================================\r\n", uPos0);
 		if (uPos1 == wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" can not find \\r\\n======================================\\r\\n\n\n"), sNum.c_str());
 			return 1;
 		}
 		wstring sStmtOld = sTxt.substr(uPos0, uPos1 - uPos0);
@@ -67,7 +52,6 @@ int UMain(int argc, UChar* argv[])
 		uPos1 = sTxt.find(L"\r\n--------------------------------------", uPos0);
 		if (uPos1 == wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" can not find last \\r\\n--------------------------------------\n\n"), sNum.c_str());
 			return 1;
 		}
 		wstring sStmtNew = sTxt.substr(uPos0, uPos1 - uPos0);
@@ -77,17 +61,14 @@ int UMain(int argc, UChar* argv[])
 		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
 		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" find --------------------------------------\n\n"), sNum.c_str());
 			return 1;
 		}
 		if (sTempTxt.find(L"======================================") != wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" find ======================================\n\n"), sNum.c_str());
 			return 1;
 		}
 		if (sTempTxt.find(L"No.") != wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" find No.\n\n"), sNum.c_str());
 			return 1;
 		}
 		sTempTxt = sStmtNew;
@@ -95,17 +76,14 @@ int UMain(int argc, UChar* argv[])
 		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
 		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" find --------------------------------------\n\n"), sNum.c_str());
 			return 1;
 		}
 		if (sTempTxt.find(L"======================================") != wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" find ======================================\n\n"), sNum.c_str());
 			return 1;
 		}
 		if (sTempTxt.find(L"No.") != wstring::npos)
 		{
-			UPrintf(USTR("ERROR: %") PRIUS USTR(" find No.\n\n"), sNum.c_str());
 			return 1;
 		}
 		if (!sTxtNew.empty())
@@ -119,7 +97,7 @@ int UMain(int argc, UChar* argv[])
 		sTxtNew += sStmtNew;
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 	}
-	fp = UFopen(argv[1], USTR("wb"));
+	fp = UFopen(argv[1], USTR("wb"), false);
 	if (fp == nullptr)
 	{
 		return 1;

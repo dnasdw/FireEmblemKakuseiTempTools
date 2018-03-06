@@ -32,7 +32,7 @@ int UMain(int argc, UChar* argv[])
 			return 1;
 		}
 		sRegexPath = argv[4];
-		FILE* fp = UFopen(sRegexPath.c_str(), USTR("rb"));
+		FILE* fp = UFopen(sRegexPath.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			return 1;
@@ -45,7 +45,7 @@ int UMain(int argc, UChar* argv[])
 	else
 	{
 		sRegexPath = UGetModuleDirName() + USTR("/regex_remaptext.txt");
-		FILE* fp = UFopen(sRegexPath.c_str(), USTR("rb"));
+		FILE* fp = UFopen(sRegexPath.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			try
@@ -66,7 +66,7 @@ int UMain(int argc, UChar* argv[])
 	}
 	if (!sRegexPath.empty())
 	{
-		FILE* fp = UFopen(sRegexPath.c_str(), USTR("rb"));
+		FILE* fp = UFopen(sRegexPath.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			return 1;
@@ -213,7 +213,7 @@ int UMain(int argc, UChar* argv[])
 		for (set<UString>::iterator it = sFile.begin(); it != sFile.end(); ++it)
 		{
 			const UString& sInFileName = *it;
-			FILE* fp = UFopen(sInFileName.c_str(), USTR("rb"));
+			FILE* fp = UFopen(sInFileName.c_str(), USTR("rb"), false);
 			if (fp == nullptr)
 			{
 				return 1;
@@ -275,7 +275,7 @@ int UMain(int argc, UChar* argv[])
 		for (set<UString>::iterator it = sFile.begin(); it != sFile.end(); ++it)
 		{
 			const UString& sInFileName = *it;
-			FILE* fp = UFopen(sInFileName.c_str(), USTR("rb"));
+			FILE* fp = UFopen(sInFileName.c_str(), USTR("rb"), false);
 			if (fp == nullptr)
 			{
 				return 1;
@@ -381,7 +381,7 @@ int UMain(int argc, UChar* argv[])
 					}
 				}
 			}
-			fp = UFopen(sOutFileName.c_str(), USTR("wb"));
+			fp = UFopen(sOutFileName.c_str(), USTR("wb"), false);
 			if (fp == nullptr)
 			{
 				return 1;

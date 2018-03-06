@@ -75,7 +75,7 @@ int resavePng(const UString& a_sDirName)
 	for (vector<UString>::iterator it = vPngFileName.begin(); it != vPngFileName.end(); ++it)
 	{
 		UString& sPngFileName = *it;
-		FILE* fp = UFopen(sPngFileName.c_str(), USTR("rb"));
+		FILE* fp = UFopen(sPngFileName.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			return 1;
@@ -134,7 +134,7 @@ int resavePng(const UString& a_sDirName)
 		png_destroy_read_struct(&pPng, &pInfo, &pEndInfo);
 		delete[] pRowPointers;
 		fclose(fp);
-		fp = UFopen(sPngFileName.c_str(), USTR("wb"));
+		fp = UFopen(sPngFileName.c_str(), USTR("wb"), false);
 		if (fp == nullptr)
 		{
 			delete[] pData;
@@ -191,7 +191,7 @@ int exportPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 	for (vector<UString>::iterator it = vPngFileName.begin(); it != vPngFileName.end(); ++it)
 	{
 		UString sPngFileName = *it;
-		FILE* fp = UFopen(sPngFileName.c_str(), USTR("rb"));
+		FILE* fp = UFopen(sPngFileName.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			return 1;
@@ -274,7 +274,7 @@ int exportPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 			pngRecord.Width = uPngWidth;
 			pngRecord.Height = uPngHeight;
 			sPngFileName = a_sNewDirName + USTR("/") + sNewFileName;
-			fp = UFopen(sPngFileName.c_str(), USTR("wb"));
+			fp = UFopen(sPngFileName.c_str(), USTR("wb"), false);
 			if (fp == nullptr)
 			{
 				delete[] pData;
@@ -317,7 +317,7 @@ int exportPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 		}
 		delete[] pData;
 	}
-	FILE* fp = UFopen(a_sRecordFileName.c_str(), USTR("wb"));
+	FILE* fp = UFopen(a_sRecordFileName.c_str(), USTR("wb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -347,7 +347,7 @@ int exportPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 
 int importPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const UString& a_sRecordFileName)
 {
-	FILE* fp = UFopen(a_sRecordFileName.c_str(), USTR("rb"));
+	FILE* fp = UFopen(a_sRecordFileName.c_str(), USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -405,7 +405,7 @@ int importPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 	{
 		SPngRecord& pngRecord = *itRecord;
 		UString sPngFileName = a_sNewDirName + USTR("/") + pngRecord.NewFileName;
-		fp = UFopen(sPngFileName.c_str(), USTR("rb"));
+		fp = UFopen(sPngFileName.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			return 1;
@@ -467,7 +467,7 @@ int importPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 		for (vector<UString>::iterator it = pngRecord.OldFileName.begin(); it != pngRecord.OldFileName.end(); ++it)
 		{
 			sPngFileName = a_sOldDirName + USTR("/") + *it;
-			fp = UFopen(sPngFileName.c_str(), USTR("wb"));
+			fp = UFopen(sPngFileName.c_str(), USTR("wb"), false);
 			if (fp == nullptr)
 			{
 				delete[] pData;
@@ -515,7 +515,7 @@ int importPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 
 int export2Png(const UString& a_sOldDirName, const UString& a_sNewDirName, const UString& a_sRecordFileName)
 {
-	FILE* fp = UFopen(a_sRecordFileName.c_str(), USTR("rb"));
+	FILE* fp = UFopen(a_sRecordFileName.c_str(), USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -574,7 +574,7 @@ int export2Png(const UString& a_sOldDirName, const UString& a_sNewDirName, const
 	{
 		SPngRecord& pngRecord = *itRecord;
 		UString sPngFileName = a_sOldDirName + USTR("/") + pngRecord.OldFileName[0];
-		fp = UFopen(sPngFileName.c_str(), USTR("rb"));
+		fp = UFopen(sPngFileName.c_str(), USTR("rb"), false);
 		if (fp == nullptr)
 		{
 			return 1;
@@ -634,7 +634,7 @@ int export2Png(const UString& a_sOldDirName, const UString& a_sNewDirName, const
 		delete[] pRowPointers;
 		fclose(fp);
 		sPngFileName = a_sNewDirName + USTR("/") + pngRecord.NewFileName;
-		fp = UFopen(sPngFileName.c_str(), USTR("wb"));
+		fp = UFopen(sPngFileName.c_str(), USTR("wb"), false);
 		if (fp == nullptr)
 		{
 			delete[] pData;

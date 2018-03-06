@@ -7,7 +7,7 @@ int UMain(int argc, UChar* argv[])
 		return 1;
 	}
 	bool bText1To4 = argc == 3 && UCscmp(argv[2], USTR("0")) != 0;
-	FILE* fp = UFopen(argv[1], USTR("rb"));
+	FILE* fp = UFopen(argv[1], USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -149,7 +149,7 @@ int UMain(int argc, UChar* argv[])
 		sMIDSuffix[2].clear();
 		sMIDSuffix[5].clear();
 	}
-	FILE* fpLog = Fopen("text1to6.txt", "ab");
+	FILE* fpLog = Fopen("text1to6.txt", "ab", false);
 	if (fpLog == nullptr)
 	{
 		return 1;
@@ -347,7 +347,7 @@ int UMain(int argc, UChar* argv[])
 		}
 	}
 	fclose(fpLog);
-	fp = UFopen(argv[1], USTR("wb"));
+	fp = UFopen(argv[1], USTR("wb"), false);
 	if (fp == nullptr)
 	{
 		return 1;

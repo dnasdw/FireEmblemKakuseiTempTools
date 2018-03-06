@@ -78,7 +78,7 @@ int UMain(int argc, UChar* argv[])
 		return 1;
 	}
 	n32 nSortType = SToN32(argv[2]);
-	FILE* fp = UFopen(argv[1], USTR("rb"));
+	FILE* fp = UFopen(argv[1], USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -174,7 +174,7 @@ int UMain(int argc, UChar* argv[])
 		sTxtNew += text.TextNew;
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 	}
-	fp = UFopen(argv[1], USTR("wb"));
+	fp = UFopen(argv[1], USTR("wb"), false);
 	if (fp == nullptr)
 	{
 		return 1;

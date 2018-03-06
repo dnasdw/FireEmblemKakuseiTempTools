@@ -6,7 +6,7 @@ int UMain(int argc, UChar* argv[])
 	{
 		return 1;
 	}
-	FILE* fp = UFopen(argv[1], USTR("rb"));
+	FILE* fp = UFopen(argv[1], USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -40,7 +40,7 @@ int UMain(int argc, UChar* argv[])
 			sCharset += uUnicode;
 		}
 	}
-	fp = UFopen(argv[2], USTR("rb"));
+	fp = UFopen(argv[2], USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;

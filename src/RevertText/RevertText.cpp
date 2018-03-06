@@ -6,7 +6,7 @@ int UMain(int argc, UChar* argv[])
 	{
 		return 1;
 	}
-	FILE* fp = UFopen(argv[1], USTR("rb"));
+	FILE* fp = UFopen(argv[1], USTR("rb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
@@ -133,7 +133,7 @@ int UMain(int argc, UChar* argv[])
 		sTxtNew += sStmtNew;
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 	}
-	fp = UFopen(argv[1], USTR("wb"));
+	fp = UFopen(argv[1], USTR("wb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
