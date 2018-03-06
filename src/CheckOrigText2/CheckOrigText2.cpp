@@ -6,7 +6,7 @@ int UMain(int argc, UChar* argv[])
 	{
 		return 1;
 	}
-	FILE* fp = UFopen(argv[1], USTR("rb"), false);
+	FILE* fp = UFopen(argv[1], USTR("rb"));
 	if (fp == nullptr)
 	{
 		return 1;
@@ -31,7 +31,7 @@ int UMain(int argc, UChar* argv[])
 	pTemp[uTxtSize] = 0;
 	wstring sTxtOrig = U16ToW(pTemp + 1);
 	delete[] pTemp;
-	fp = UFopen(argv[2], USTR("rb"), false);
+	fp = UFopen(argv[2], USTR("rb"));
 	if (fp == nullptr)
 	{
 		return 1;
@@ -121,7 +121,7 @@ int UMain(int argc, UChar* argv[])
 		sTxtNew += sStmtNew;
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 	}
-	fp = UFopen(argv[2], USTR("wb"), false);
+	fp = UFopen(argv[2], USTR("wb"));
 	if (fp == nullptr)
 	{
 		return 1;

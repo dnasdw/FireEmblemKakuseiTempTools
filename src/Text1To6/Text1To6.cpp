@@ -7,7 +7,7 @@ int UMain(int argc, UChar* argv[])
 		return 1;
 	}
 	bool bText1To4 = argc == 3 && UCscmp(argv[2], USTR("0")) != 0;
-	FILE* fp = UFopen(argv[1], USTR("rb"), false);
+	FILE* fp = UFopen(argv[1], USTR("rb"));
 	if (fp == nullptr)
 	{
 		return 1;
@@ -104,6 +104,36 @@ int UMain(int argc, UChar* argv[])
 		}
 		sNewText = sTxt.substr(uPos0, uPos1 - uPos0);
 		uPos0 = uPos1 + wcslen(L"\r\n--------------------------------------");
+		wstring sTempTxt = sOldText;
+		sTempTxt = Replace(sTempTxt, L"[--------------------------------------]", L"");
+		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
+		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"======================================") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"No.") != wstring::npos)
+		{
+			return 1;
+		}
+		sTempTxt = sNewText;
+		sTempTxt = Replace(sTempTxt, L"[--------------------------------------]", L"");
+		sTempTxt = Replace(sTempTxt, L"[======================================]", L"");
+		if (sTempTxt.find(L"--------------------------------------") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"======================================") != wstring::npos)
+		{
+			return 1;
+		}
+		if (sTempTxt.find(L"No.") != wstring::npos)
+		{
+			return 1;
+		}
 		mText[nOuterNo][nNo][0] = Format(L"%d", nInnerCount);
 		mText[nOuterNo][nNo][1] = sCharName;
 		mText[nOuterNo][nNo][2] = sOldText;
@@ -119,7 +149,7 @@ int UMain(int argc, UChar* argv[])
 		sMIDSuffix[2].clear();
 		sMIDSuffix[5].clear();
 	}
-	FILE* fpLog = fopen("text1to6.txt", "ab");
+	FILE* fpLog = Fopen("text1to6.txt", "ab");
 	if (fpLog == nullptr)
 	{
 		return 1;
@@ -317,7 +347,7 @@ int UMain(int argc, UChar* argv[])
 		}
 	}
 	fclose(fpLog);
-	fp = UFopen(argv[1], USTR("wb"), false);
+	fp = UFopen(argv[1], USTR("wb"));
 	if (fp == nullptr)
 	{
 		return 1;
