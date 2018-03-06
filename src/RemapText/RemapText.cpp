@@ -23,7 +23,8 @@ int UMain(int argc, UChar* argv[])
 	{
 		return 1;
 	}
-	vector<URegex> vRegex;
+	vector<URegex> vCopy;
+	vector<URegex> vRemap;
 	UString sRegexPath;
 	if (argc > 4)
 	{
@@ -51,7 +52,7 @@ int UMain(int argc, UChar* argv[])
 			try
 			{
 				URegex rAll(USTR(".*\\.txt"), regex_constants::ECMAScript | regex_constants::icase);
-				vRegex.push_back(rAll);
+				vRemap.push_back(rAll);
 			}
 			catch (regex_error& e)
 			{
@@ -92,17 +93,34 @@ int UMain(int argc, UChar* argv[])
 		wstring sTxt = U16ToW(pTemp + 1);
 		delete[] pTemp;
 		vector<wstring> vTxt = SplitOf(sTxt, L"\r\n");
+		vector<URegex>* pList = &vRemap;
 		for (vector<wstring>::const_iterator it = vTxt.begin(); it != vTxt.end(); ++it)
 		{
 			sTxt = Trim(*it);
 			if (!sTxt.empty())
 			{
-				if (!StartWith(sTxt, L"//"))
+				if (StartWith(sTxt, L"//"))
+				{
+					vector<wstring> vTag = Split<wstring>(sTxt.c_str() + wcslen(L"//"), L":");
+					if (vTag.size() == 1 && EndWith(sTxt, L":"))
+					{
+						vTag[0] = Trim(vTag[0]);
+						if (vTag[0] == L"copy")
+						{
+							pList = &vCopy;
+						}
+						else if (vTag[0] == L"remap")
+						{
+							pList = &vRemap;
+						}
+					}
+				}
+				else
 				{
 					try
 					{
 						URegex rFile(WToU(sTxt), regex_constants::ECMAScript | regex_constants::icase);
-						vRegex.push_back(rFile);
+						pList->push_back(rFile);
 					}
 					catch (regex_error& e)
 					{
@@ -112,7 +130,7 @@ int UMain(int argc, UChar* argv[])
 			}
 		}
 	}
-	if (vRegex.empty())
+	if (vCopy.empty() && vRemap.empty())
 	{
 		return 1;
 	}
@@ -191,15 +209,28 @@ int UMain(int argc, UChar* argv[])
 		qPath.pop();
 		qDir.pop();
 	}
+	set<UString> sFileSet;
 	map<n32, set<UString>> mFileMap;
 	for (map<UString, UString>::iterator it = mFileMapping.begin(); it != mFileMapping.end(); ++it)
 	{
 		UString sFileName = it->first;
-		for (n32 i = 0; i < static_cast<n32>(vRegex.size()); i++)
+		for (n32 i = 0; i < static_cast<n32>(vCopy.size()); i++)
 		{
-			if (regex_search(sFileName, vRegex[i]))
+			if (regex_search(sFileName, vCopy[i]))
 			{
-				mFileMap[i].insert(sFileName);
+				sFileSet.insert(sFileName);
+				mFileMap[-1].insert(sFileName);
+				break;
+			}
+		}
+		for (n32 i = 0; i < static_cast<n32>(vRemap.size()); i++)
+		{
+			if (regex_search(sFileName, vRemap[i]))
+			{
+				if (sFileSet.insert(sFileName).second)
+				{
+					mFileMap[i].insert(sFileName);
+				}
 				break;
 			}
 		}
@@ -209,6 +240,11 @@ int UMain(int argc, UChar* argv[])
 	unordered_map<wstring, wstring> mText;
 	for (map<n32, set<UString>>::iterator itMap = mFileMap.begin(); itMap != mFileMap.end(); ++itMap)
 	{
+		bool bCopy = itMap->first == -1;
+		if (bCopy)
+		{
+			continue;
+		}
 		set<UString>& sFile = itMap->second;
 		for (set<UString>::iterator it = sFile.begin(); it != sFile.end(); ++it)
 		{
@@ -301,6 +337,7 @@ int UMain(int argc, UChar* argv[])
 	}
 	for (map<n32, set<UString>>::iterator itMap = mFileMap.begin(); itMap != mFileMap.end(); ++itMap)
 	{
+		bool bCopy = itMap->first == -1;
 		set<UString>& sFile = itMap->second;
 		for (set<UString>::iterator it = sFile.begin(); it != sFile.end(); ++it)
 		{
@@ -385,29 +422,32 @@ int UMain(int argc, UChar* argv[])
 				{
 					return 1;
 				}
-				unordered_map<wstring, wstring>::iterator itText = mText.find(sStmtOld);
-				if (nRemapType == 0)
+				if (!bCopy)
 				{
-					if (itText == mText.end())
+					unordered_map<wstring, wstring>::iterator itText = mText.find(sStmtOld);
+					if (nRemapType == 0)
 					{
-						UPrintf(USTR("ERROR: %") PRIUS USTR(" %") PRIUS USTR("\n\n"), sInFileName.c_str(), WToU(sNum).c_str());
-						return 1;
+						if (itText == mText.end())
+						{
+							UPrintf(USTR("ERROR: %") PRIUS USTR(" %") PRIUS USTR("\n\n"), sInFileName.c_str(), WToU(sNum).c_str());
+							return 1;
+						}
+						else
+						{
+							sStmtNew = itText->second;
+						}
 					}
-					else
+					else if (nRemapType == 1)
 					{
-						sStmtNew = itText->second;
-					}
-				}
-				else if (nRemapType == 1)
-				{
-					if (itText != mText.end())
-					{
-						sStmtNew = itText->second;
-						mText.erase(itText);
-					}
-					else
-					{
-						sStmtNew = sReplacement;
+						if (itText != mText.end())
+						{
+							sStmtNew = itText->second;
+							mText.erase(itText);
+						}
+						else
+						{
+							sStmtNew = sReplacement;
+						}
 					}
 				}
 				if (!sTxtNew.empty())
