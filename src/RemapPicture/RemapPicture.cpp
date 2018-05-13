@@ -466,6 +466,13 @@ int importPng(const UString& a_sOldDirName, const UString& a_sNewDirName, const 
 		fclose(fp);
 		for (vector<UString>::iterator it = pngRecord.OldFileName.begin(); it != pngRecord.OldFileName.end(); ++it)
 		{
+			vector<UString> vDirPath = SplitOf(*it, USTR("/\\"));
+			UString sDirName = a_sOldDirName;
+			for (n32 i = 0; i < static_cast<n32>(vDirPath.size()) - 1; i++)
+			{
+				sDirName += USTR("/") + vDirPath[i];
+				UMkdir(sDirName.c_str());
+			}
 			sPngFileName = a_sOldDirName + USTR("/") + *it;
 			fp = UFopen(sPngFileName.c_str(), USTR("wb"), false);
 			if (fp == nullptr)
