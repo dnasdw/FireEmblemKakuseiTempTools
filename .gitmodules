@@ -10,3 +10,6 @@
 [submodule "dep/libpng"]
 	path = dep/libpng
 	url = https://github.com/dnasdw/libsundaowen_libpng.git
+[submodule "dep/stb"]
+	path = dep/stb
+	url = https://github.com/dnasdw/libsundaowen_stb.git
