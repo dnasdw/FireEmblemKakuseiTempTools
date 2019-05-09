@@ -40,7 +40,6 @@ int UMain(int argc, UChar* argv[])
 	{
 		sKana.append(1, i);
 	}
-	wstring sTxtNew;
 	wstring::size_type uPos0 = 0;
 	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
 	{
@@ -94,10 +93,6 @@ int UMain(int argc, UChar* argv[])
 		if (sTempTxt.find(L"No.") != wstring::npos)
 		{
 			return 1;
-		}
-		if (!sTxtNew.empty())
-		{
-			sTxtNew += L"\r\n\r\n";
 		}
 		wstring::size_type uPos = sStmtNew.find_first_of(sKana);
 		if (uPos != wstring::npos)
