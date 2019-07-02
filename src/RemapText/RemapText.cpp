@@ -102,7 +102,7 @@ int UMain(int argc, UChar* argv[])
 				if (StartWith(sTxt, L"//"))
 				{
 					vector<wstring> vTag = Split<wstring>(sTxt.c_str() + wcslen(L"//"), L":");
-					if (vTag.size() == 1 && EndWith(sTxt, L":"))
+					if (vTag.size() == 2 && vTag[1].empty())
 					{
 						vTag[0] = Trim(vTag[0]);
 						if (vTag[0] == L"copy")
