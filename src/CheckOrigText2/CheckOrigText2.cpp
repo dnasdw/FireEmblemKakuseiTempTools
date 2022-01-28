@@ -151,13 +151,14 @@ int UMain(int argc, UChar* argv[])
 		sTxtNew += sStmtNew;
 		sTxtNew += L"\r\n--------------------------------------\r\n";
 	}
+	U16String sTxtNewU16 = WToU16(sTxtNew);
 	fp = UFopen(argv[2], USTR("wb"), false);
 	if (fp == nullptr)
 	{
 		return 1;
 	}
 	fwrite("\xFF\xFE", 2, 1, fp);
-	fwrite(sTxtNew.c_str(), 2, sTxtNew.size(), fp);
+	fwrite(sTxtNewU16.c_str(), 2, sTxtNewU16.size(), fp);
 	fclose(fp);
 	return 0;
 }
