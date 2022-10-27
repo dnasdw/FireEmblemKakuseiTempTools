@@ -40,6 +40,8 @@ int UMain(int argc, UChar* argv[])
 	{
 		sKana.append(1, i);
 	}
+	// £¤£¤£¤£¤£¤£¤£¤£¤ÖØ¸´ÎÄ±¾£¤£¤£¤£¤£¤£¤£¤
+	wstring sReplacement = L"\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\u91CD\u590D\u6587\u672C\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5";
 	wstring::size_type uPos0 = 0;
 	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
 	{
@@ -94,12 +96,15 @@ int UMain(int argc, UChar* argv[])
 		{
 			return 1;
 		}
-		wstring::size_type uPos = sStmtNew.find_first_of(sKana);
-		if (uPos != wstring::npos)
+		if (sStmtNew != sReplacement)
 		{
-			wstring sWord = sStmtNew.substr(uPos, 1);
-			sStmtNew = Replace(sStmtNew, L"\r\n", L"\n");
-			UPrintf(USTR("%") PRIUS USTR(" |%") PRIUS USTR("|\n%") PRIUS USTR("\n"), WToU(sNum).c_str(), WToU(sWord).c_str(), WToU(sStmtNew).c_str());
+			wstring::size_type uPos = sStmtNew.find_first_of(sKana);
+			if (uPos != wstring::npos)
+			{
+				wstring sWord = sStmtNew.substr(uPos, 1);
+				sStmtNew = Replace(sStmtNew, L"\r\n", L"\n");
+				UPrintf(USTR("%") PRIUS USTR(" |%") PRIUS USTR("|\n%") PRIUS USTR("\n"), WToU(sNum).c_str(), WToU(sWord).c_str(), WToU(sStmtNew).c_str());
+			}
 		}
 	}
 	return 0;

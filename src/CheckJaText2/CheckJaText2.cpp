@@ -40,6 +40,8 @@ int UMain(int argc, UChar* argv[])
 	{
 		sKana.append(1, i);
 	}
+	// £¤£¤£¤£¤£¤£¤£¤£¤ÖØ¸´ÎÄ±¾£¤£¤£¤£¤£¤£¤£¤
+	wstring sReplacement = L"\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\u91CD\u590D\u6587\u672C\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5";
 	wstring::size_type uPos0 = 0;
 	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
 	{
@@ -95,7 +97,7 @@ int UMain(int argc, UChar* argv[])
 		{
 			return 1;
 		}
-		if (nNum % 2 != 0)
+		if (nNum % 2 != 0 && sStmtNew != sReplacement)
 		{
 			wstring::size_type uPos = sStmtNew.find_first_of(sKana);
 			if (uPos != wstring::npos)

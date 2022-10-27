@@ -31,6 +31,8 @@ int UMain(int argc, UChar* argv[])
 	pTemp[uTxtSize] = 0;
 	wstring sTxt = U16ToW(pTemp + 1);
 	delete[] pTemp;
+	// £¤£¤£¤£¤£¤£¤£¤£¤ÖØ¸´ÎÄ±¾£¤£¤£¤£¤£¤£¤£¤
+	wstring sReplacement = L"\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\u91CD\u590D\u6587\u672C\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5";
 	wstring::size_type uPos0 = 0;
 	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
 	{
@@ -86,7 +88,7 @@ int UMain(int argc, UChar* argv[])
 		{
 			return 1;
 		}
-		if (sStmtNew != sStmtOld)
+		if (sStmtNew != sReplacement && sStmtNew != sStmtOld)
 		{
 			wstring::size_type uPosOld0 = 0;
 			wstring::size_type uPosNew0 = 0;
@@ -148,7 +150,7 @@ int UMain(int argc, UChar* argv[])
 		}
 		wstring sStmtNew = sTxt.substr(uPos0, uPos1 - uPos0);
 		uPos0 = uPos1 += wcslen(L"\r\n--------------------------------------");
-		if (sStmtNew != sStmtOld)
+		if (sStmtNew != sReplacement && sStmtNew != sStmtOld)
 		{
 			wstring::size_type uPosOld0 = 0;
 			wstring::size_type uPosNew0 = 0;

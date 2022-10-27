@@ -31,6 +31,8 @@ int UMain(int argc, UChar* argv[])
 	pTemp[uTxtSize] = 0;
 	wstring sTxt = U16ToW(pTemp + 1);
 	delete[] pTemp;
+	// £¤£¤£¤£¤£¤£¤£¤£¤ÖØ¸´ÎÄ±¾£¤£¤£¤£¤£¤£¤£¤
+	wstring sReplacement = L"\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\u91CD\u590D\u6587\u672C\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5\uFFE5";
 	wstring::size_type uPos0 = 0;
 	while ((uPos0 = sTxt.find(L"No.", uPos0)) != wstring::npos)
 	{
@@ -92,11 +94,11 @@ int UMain(int argc, UChar* argv[])
 		{
 			return 1;
 		}
-		if (nLineCountOld != -1)
+		if (nLineCountOld != -1 && sStmtNew != sReplacement)
 		{
-			vector<wstring> vLine = Split(sStmtNew, L"\r\n");
-			n32 nLineCountNew = static_cast<n32>(vLine.size());
-			if (static_cast<n32>(vLine.size()) != nLineCountOld)
+			vector<wstring> vLineNew = Split(sStmtNew, L"\r\n");
+			n32 nLineCountNew = static_cast<n32>(vLineNew.size());
+			if (nLineCountNew != nLineCountOld)
 			{
 				sStmtNew = Replace(sStmtNew, L"\r\n", L"\n");
 				UPrintf(USTR("%") PRIUS USTR("\n%d -> %d\n%") PRIUS USTR("\n"), WToU(sNum).c_str(), nLineCountOld, nLineCountNew, WToU(sStmtNew).c_str());
